@@ -31,7 +31,7 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-ORIGIN = 'http://localhost:5000'
+ORIGIN = 'http://localhost:8080'
 RP_ID = 'localhost'
 
 # Trust anchors (trusted attestation roots) should be
@@ -227,6 +227,9 @@ def verify_assertion():
         'success': 'Successfully authenticated as {}'.format(user.username)
     })
 
+@app.route('/frame')
+def frame():
+    return '<iframe src="/" width="600"/>'
 
 @app.route('/logout')
 @login_required
@@ -236,4 +239,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

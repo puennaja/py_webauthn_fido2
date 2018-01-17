@@ -3,9 +3,9 @@
     <script src="{{ url_for('static', filename='js/lib/base64.js') }}"></script>
     <script src="{{ url_for('static', filename='js/webauthn.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <title>WebAuthn Test</title>
+    <title>WebAuthn Iframe</title>
     <body>
-        <h1>WebAuthn Test</h1>
+        <h1>WebAuthn Iframe</h1>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}

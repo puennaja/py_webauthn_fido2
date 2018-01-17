@@ -1,8 +1,27 @@
-# PyWebAuthn
+# PyWebAuthn Iframe Demo
 
 PyWebAuthn is a Python module which can be used to handle [WebAuthn][1] registration and assertion. Currently, WebAuthn is only supported in [Firefox Nightly][2].
 
 # Usage
+
+Running the demo:
+
+You will need to start two Python applications in two terminal windows:
+
+In one window:
+
+- `virtualenv .env` && source .env/bin/activate
+- `pip install -r flask_demo/requirements.txt`
+- `cd flask_demo && python app.py`
+
+In another window:
+
+- `source .env/bin/activate`
+- `cd iframe_parent && python app.py`
+
+You will have two webservers running: the child iFrame at :5000 and the parent server at :8080. Browse to `http://localhost:8080`.
+
+# Working with credentials
 
 Generating credential options, (to be passed to `navigator.credentials.create`):
 ```python

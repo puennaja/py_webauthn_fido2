@@ -1,3 +1,10 @@
+const SHOULD_MAKE_CREDENTIAL = 'SHOULD_MAKE_CREDENTIAL';
+const DID_MAKE_CREDENTIAL = 'DID_MAKE_CREDENTIAL';
+const MAKE_CREDENTIAL_ERROR = 'MAKE_CREDENTIAL_ERROR';
+const SHOULD_GET_CREDENTIAL = 'SHOULD_GET_CREDENTIAL';
+const DID_GET_CREDENTIAL = 'DID_GET_CREDENTIAL';
+const GET_CREDENTIAL_ERROR = 'GET_CREDENTIAL_ERROR';
+
 function b64enc(buf) {
     return base64js.fromByteArray(buf)
                    .replace(/\+/g, "-")
@@ -56,9 +63,56 @@ function verifyAssertion(assertedCredential) {
     });
 }
 
+/** Dispatches messages from parent */
+const didReceiveMessage = ({data, origin}) => {
+    const {type, body} = data;
+
+    switch (type) {
+        case DID_MAKE_CREDENTIAL:
+            parentDidMakeCredential(body);
+            break;
+        case DID_GET_CREDENTIAL:
+            parentDidGetCredential(body);
+            break;
+        default:
+            break;
+    }
+}
+
+/** Asks parent to create a credential */
+const parentShouldMakeCredential = (options) => {
+    const message = {
+        type: SHOULD_MAKE_CREDENTIAL, 
+        body: options
+    }
+    window.parent.postMessage(message, 'http://localhost:8080');
+}
+
+/** Callback executed after parent creates a credential */
+const parentDidMakeCredential = (newCredentialInfo) => {
+    registerNewCredential(newCredentialInfo);
+}
+
+
+/** Asks parent to get a credential */
+const parentShouldGetCredential = assertionInfo => {
+    const message = {
+        type: SHOULD_GET_CREDENTIAL, 
+        body: assertionInfo
+    }
+    window.parent.postMessage(message, 'http://localhost:8080');
+}
+
+/** Callback executed after parent gets a credential */
+const parentDidGetCredential = assertedCredential => {
+    verifyAssertion(assertedCredential);
+}
+
 $(document).ready(function() {
     // if (!PublicKeyCredential) { console.log("Browser not WebAuthn compatible."); }
-
+    
+    window.addEventListener('message', didReceiveMessage)
+    
     $("#register").click(function(e) {
         e.preventDefault();
         var username = $('input[name="register_username"]').val();
@@ -73,18 +127,9 @@ $(document).ready(function() {
             // Turn the user ID back into the accepted format
             makeCredentialOptions.user.id = Uint8Array.from(
                 atob(makeCredentialOptions.user.id), c => c.charCodeAt(0));
-            navigator.credentials.create({ publicKey: makeCredentialOptions })
-                .then(function(newCredentialInfo) {
-                    console.log(newCredentialInfo);
-                    // Send new credential info to server for
-                    // verification and registration.
-                    registerNewCredential(newCredentialInfo);
-                }).catch(function(err) {
-                    // No acceptable authenticator or user refused
-                    // consent. Handle appropriately.
-                    console.log("Error creating credential.");
-                    console.log(err);
-                });
+            
+            // Request parent to create a credential
+            parentShouldMakeCredential(makeCredentialOptions)
         });
     });
 
@@ -94,7 +139,6 @@ $(document).ready(function() {
         $.post("/webauthn_begin_assertion", {
             username: username
         }).done(function(assertionOptions) {
-            console.log(assertionOptions);
             // Turn the challenge back into the accepted format
             assertionOptions.challenge = Uint8Array.from(
                 atob(assertionOptions.challenge), c => c.charCodeAt(0));
@@ -104,17 +148,8 @@ $(document).ready(function() {
                 listItem.id = Uint8Array.from(
                     atob(fixedId), c => c.charCodeAt(0));
             });
-            navigator.credentials.get({ publicKey: assertionOptions })
-                .then(function(assertionInfo) {
-                    console.log(assertionInfo);
-                    // Send assertion to server for verification.
-                    verifyAssertion(assertionInfo);
-                }).catch(function(err) {
-                    // No acceptable authenticator or user refused
-                    // consent. Handle appropriately.
-                    console.log("Error during assertion.");
-                    console.log(err);
-                });
+    
+            parentShouldGetCredential(assertionOptions);
         });
     });
 });
