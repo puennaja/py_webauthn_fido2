@@ -31,8 +31,8 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-RP_ID = 'localhost'
-ORIGIN = 'https://localhost:5000'
+RP_ID = 'fido2-flask-server'
+ORIGIN = 'https://fido2-flask-server.herokuapp.com'
 
 # Trust anchors (trusted attestation roots) should be
 # placed in TRUST_ANCHOR_DIR.
