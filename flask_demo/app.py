@@ -17,9 +17,9 @@ from flask_login import logout_user
 
 from . import util
 
-from db import db
-from context import webauthn
-from models import User
+from .db import db
+from .context import webauthn
+from .models import User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
