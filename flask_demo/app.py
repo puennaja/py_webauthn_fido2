@@ -23,7 +23,7 @@ from .models import User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
-    os.path.join(os.path.dirname(os.path.abspath(__name__)), 'webauthn.db'))
+    os.path.join(os.path.dirname(os.path.abspath(__name__)), './webauthn.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 sk = os.environ.get('FLASK_SECRET_KEY')
 app.secret_key = sk if sk else os.urandom(40)
