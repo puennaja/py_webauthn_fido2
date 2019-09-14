@@ -23,6 +23,7 @@ from .models import User
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__name__))
+print(basedir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
     os.path.join(basedir, '.webauthn.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
