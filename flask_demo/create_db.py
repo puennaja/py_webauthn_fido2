@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from .app import app
+from app import app
 from .db import db
 
 
