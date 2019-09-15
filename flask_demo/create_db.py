@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from app import app
-from db import db
+from .app import app
+from .db import db
 
 
 def main():
