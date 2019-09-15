@@ -25,7 +25,8 @@ app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__name__))
 
-DATABASE_URL = 'sqlite:///{}'.format(os.path.join(basedir, 'webauthn.db'))
+DATABASE_URL = sqlite:///webauthn.sqlite3
+#DATABASE_URL = 'sqlite:///{}'.format(os.path.join(basedir, 'webauthn.db'))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
 #    os.path.join(basedir, 'webauthn.db'))
