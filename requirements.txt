@@ -13,5 +13,4 @@ gunicorn
 alembic
 Flask-Migrate
 Flask-Script
-Flask-SQLAlchemy
 psycopg2
