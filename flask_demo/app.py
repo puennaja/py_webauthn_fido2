@@ -22,9 +22,13 @@ from flask_demo.context import webauthn
 from flask_demo.models import User
 
 app = Flask(__name__)
+
 basedir = os.path.abspath(os.path.dirname(__name__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
-    os.path.join(basedir, 'webauthn.db'))
+
+DATABASE_URL = sqlite:///webauthn.db
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
+#    os.path.join(basedir, 'webauthn.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 sk = os.environ.get('FLASK_SECRET_KEY')
 app.secret_key = sk if sk else os.urandom(40)
