@@ -17,9 +17,9 @@ from flask_login import logout_user
 
 from . import util
 
-from .db import db
-from .context import webauthn
-from .models import User
+from flask_demo.db import db
+from flask_demo.context import webauthn
+from flask_demo.models import User
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__name__))
