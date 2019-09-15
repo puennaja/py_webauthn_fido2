@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from .app import app
+from flask_demo.app import app
 from .db import db
 
 
