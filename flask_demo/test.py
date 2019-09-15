@@ -1,9 +1,5 @@
-from flask import Flask
-app = Flask(__name__)
+import os
+import sys
 
-@app.route('/')
-def hello_world():
-    return 'Hello World! 555 88 77 '
-
-if __name__ == '__main__':
-    app.run()
+basedir = os.path.abspath(os.path.dirname(__name__))
+print(basedir)
