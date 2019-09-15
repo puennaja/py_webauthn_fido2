@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from flask_demo.app import app
-from .db import db
+from flask_demo.db import db
 
 
 def main():
